@@ -5,7 +5,7 @@
 //  Created by Jamile Marian Polycarpo on 26/09/25.
 //
 
-import SwiftUI
+internal import SwiftUI
 
 
 struct LaunchScreen: View {
