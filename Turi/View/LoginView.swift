@@ -105,15 +105,9 @@ struct LoginView: View {
                     .foregroundStyle(.white)
                     .font(.system(size: 12))
                     .fontWeight(.semibold)
-                
             }
-            
-            
-            
         }
         .ignoresSafeArea()
-        
-        
     }
 }
 
