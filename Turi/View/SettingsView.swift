@@ -8,6 +8,8 @@
 internal import SwiftUI
 
 struct SettingsView: View {
+    @State private var name: String = ""
+    
     var body: some View {
         ZStack {
             Color("ColorBackground")
@@ -16,7 +18,39 @@ struct SettingsView: View {
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea(edges: .all)
-            Text("SettingsView")
+            VStack(alignment: .leading) {
+                Text("Ajustes")
+                    .foregroundStyle(.white)
+                    .font(.system(size: 32))
+                    .padding()
+                VStack{
+                    Image(systemName: "person.circle")
+                        .foregroundStyle(.white)
+                        .fontWeight(.ultraLight)
+                        .font(.system(size: 195))
+                    
+                }
+                VStack (alignment: .leading){
+                    Text("Nome")
+                        .foregroundStyle(.white)
+                        .font(.system(size: 12))
+                        .fontWeight(.light)
+                        .padding(.leading, 40)
+                    
+                    TextField("Beltrano de Tal", text: $name)
+                        .padding()
+                        .foregroundStyle(.white)
+                        .background(Color.clear)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
+                            .stroke(Color.white, lineWidth: 1))
+                        .padding(.horizontal, 24)
+                }
+                
+            }
+           
+            
+            
+            
         }
     }
 }
