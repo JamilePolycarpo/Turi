@@ -28,6 +28,7 @@ struct LoginView: View {
                 
                 TextField("E-mail:", text: $email)
                     .padding()
+                    .foregroundStyle(.white)
                     .background(Color.clear)
                     .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
@@ -70,9 +71,9 @@ struct LoginView: View {
                         print("Login com Google")
                     }) {
                         HStack {
-                            Image("googleIcon") // nome do ícone no Assets.xcassets
+                            Image("ios_light_rd_na")
                                 .resizable()
-                                .frame(width: 20, height: 20)
+                                .frame(width: 25, height: 25)
                             Text("Entrar com Google")
                                 .fontWeight(.medium)
                                 .foregroundColor(.black)
