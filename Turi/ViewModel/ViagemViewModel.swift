@@ -16,34 +16,50 @@ final class ViagemViewModel: ObservableObject {
         }
     }
 
-    private let viagensKey = "viagens"
-    private let notasKey = "viagemNotas"
+    private let viagensKey = "trips"
+   
 
     init() {
         loadTrips()
     }
 
-    // Adds a new trip with provided name and notes (notes currently unused)
-    func addViagem(nome: String, notas: String) {
-        let newTrip = Trip(nome: nome, data: Date(), notas: notas)
+    // Adds a new trip with provided name, date and notes
+    func addViagem(nome: String, data: Date = Date(), notas: String) {
+        let newTrip = Trip(nome: nome, data: data, notas: notas)
         trips.append(newTrip)
     }
 
    func loadTrips() {
-        let names = UserDefaults.standard.stringArray(forKey: viagensKey) ?? []
-        // For now, we only have titles; create Trip with current date for legacy data.
-        self.trips = names.map { Trip(nome: $0, data: Date(), notas: "") }
+       guard let savedData = UserDefaults.standard.data(forKey: "tripsData") else{return}
+       guard let loadedTrips = try? JSONDecoder().decode([Trip].self, from: savedData) else { return }
+       trips = loadedTrips
     }
 
     private func saveTrips() {
-        // Persist only titles for compatibility with existing AddViagemView logic.
-        let names = trips.map { $0.nome }
-        UserDefaults.standard.set(names, forKey: viagensKey)
+        if let data = try? JSONEncoder().encode(trips) {
+            UserDefaults.standard.set(data, forKey: "tripsData")
+        }
     }
     
     func deleteTrip(at offsets: IndexSet) {
         trips.remove(atOffsets: offsets)
         saveTrips() // garante que o UserDefaults seja atualizado
+    }
+
+    func updateTrip(_ trip: Trip, nome: String, data: Date, notas: String?) {
+        guard let index = trips.firstIndex(where: { $0.id == trip.id }) else { return }
+        
+        // Criar um novo Trip com os dados atualizados
+        let updatedTrip = Trip(nome: nome, data: data, notas: notas)
+        trips[index] = updatedTrip
+    }
+
+    func updateTripName(_ trip: Trip, to newName: String) {
+        guard let index = trips.firstIndex(where: { $0.id == trip.id }) else { return }
+        
+        // Criar um novo Trip com o nome atualizado
+        let updatedTrip = Trip(nome: newName, data: trip.data, notas: trip.notas)
+        trips[index] = updatedTrip
     }
 }
 
