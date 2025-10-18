@@ -21,8 +21,9 @@ struct RegisterView: View {
             // Verificar os Espaçamentos e o placeholder
             VStack (spacing: 20){
                 Text("Cadastre-se")
+                    .font(.custom("Inknut Antiqua", size: 32))
                     .foregroundStyle(.white)
-                    .font(.system(size: 32))
+//                    .font(.system(size: 32))
                 
                 TextField("Nome:", text: $name)
                     .padding()
@@ -107,7 +108,7 @@ struct RegisterView: View {
             }) {
                 Text("Entrar")
                     .foregroundStyle(.colorBackground)
-                    .font(.system(size: 24))
+                    .font(.custom("InknutAntiqua", size: 24))
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
                     .padding()
