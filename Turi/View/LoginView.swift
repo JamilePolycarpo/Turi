@@ -66,10 +66,11 @@ struct LoginView: View {
                 print("Botão de login clicado")
             }) {
                 Text("Entrar")
+                    .font(.custom("Inknut Antiqua", size: 24))
+                    .fontWeight(.bold)
                     .foregroundStyle(.colorBackground)
-                    .font(.custom("Inknut Antiqua", size: 12))
                     .frame(maxWidth: .infinity)
-                    .padding()
+                    .frame(height: 45)
                     .background(Color.white)
                     .cornerRadius(40)
                     .padding(.horizontal, 30)
