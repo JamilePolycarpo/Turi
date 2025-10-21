@@ -118,10 +118,12 @@ struct LoginView: View {
                         .padding(.horizontal, 30)
                     }
                 }
+                
                 Text("Ainda não tem conta? Cadastre-se!")
                     .foregroundStyle(.white)
-                    .font(.system(size: 12))
+                    .font(.custom("Inknut Antiqua", size: 12))
                     .fontWeight(.semibold)
+                    .padding(.top, -10)
             }
         }
         .ignoresSafeArea()
