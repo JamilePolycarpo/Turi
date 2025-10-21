@@ -43,14 +43,21 @@ struct LoginView: View {
                         .padding(.horizontal, 24)
                 }
                 
-                TextField("Senha:", text: $password)
-                    .padding()
-                    .background(Color.clear)
-                    .overlay(RoundedRectangle(cornerRadius: 40)
+                ZStack(alignment: .leading) {
+                    if password.isEmpty {
+                        Text("Senha:")
+                            .foregroundStyle(.white.opacity(1.0))
+                            .padding(.leading, 40)
+                    }
+                    
+                    SecureField("Senha:", text: $password)
+                        .padding()
+                        .background(Color.clear)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
-                
+                        )
+                        .padding(.horizontal, 24)
+                }
                 Text("Esqueceu a senha?")
                     .foregroundStyle(.white)
                     .font(.custom("Inknut Antiqua", size: 12))
