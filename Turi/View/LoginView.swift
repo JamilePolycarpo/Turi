@@ -24,16 +24,24 @@ struct LoginView: View {
                 
                 Text("Login")
                     .foregroundStyle(.white)
-                    .font(.title)
+                    .font(.custom("Inknut Antiqua", size: 24))
                 
-                TextField("E-mail:", text: $email)
-                    .padding()
-                    .foregroundStyle(.white)
-                    .background(Color.clear)
-                    .overlay(RoundedRectangle(cornerRadius: 40)
+                ZStack(alignment: .leading) {
+                    if email.isEmpty {
+                        Text("E-mail:")
+                            .foregroundStyle(.white.opacity(1.0))
+                            .padding(.leading, 40)
+                    }
+                    
+                    TextField("E-mail:", text: $email)
+                        .padding()
+                        .foregroundStyle(.white)
+                        .background(Color.clear)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
+                        )
+                        .padding(.horizontal, 24)
+                }
                 
                 TextField("Senha:", text: $password)
                     .padding()
@@ -45,16 +53,14 @@ struct LoginView: View {
                 
                 Text("Esqueceu a senha?")
                     .foregroundStyle(.white)
-                    .font(.callout)
-                    .fontWeight(.semibold)
+                    .font(.custom("Inknut Antiqua", size: 12))
                 
                  Button(action: {
                 print("Botão de login clicado")
             }) {
                 Text("Entrar")
                     .foregroundStyle(.colorBackground)
-                    .font(.system(size: 24))
-                    .fontWeight(.bold)
+                    .font(.custom("Inknut Antiqua", size: 12))
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.white)
