@@ -70,18 +70,20 @@ struct LoginView: View {
                     .fontWeight(.bold)
                     .foregroundStyle(.colorBackground)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 45)
+                    .frame(height: 44)
                     .background(Color.white)
                     .cornerRadius(40)
                     .padding(.horizontal, 30)
             }
-                
-                Text("Entre com")
-                    .foregroundStyle(.white)
-                    .font(.system(size: 24))
-                    .fontWeight(.bold)
-                
-                Button(action: {
+               
+                VStack(spacing: 15) {
+                    Text("Entre com")
+                        .foregroundStyle(.white)
+                        .font(.custom("Inknut Antiqua", size: 24))
+                        .fontWeight(.bold)
+                        .padding(.bottom, -18)
+                    
+                    Button(action: {
                         print("Login com Google")
                     }) {
                         HStack {
@@ -98,8 +100,8 @@ struct LoginView: View {
                         .cornerRadius(10)
                         .padding(.horizontal, 30)
                     }
-                
-                Button(action: {
+                    
+                    Button(action: {
                         print("Login com Apple")
                     }) {
                         HStack {
@@ -115,7 +117,7 @@ struct LoginView: View {
                         .cornerRadius(10)
                         .padding(.horizontal, 30)
                     }
-
+                }
                 Text("Ainda não tem conta? Cadastre-se!")
                     .foregroundStyle(.white)
                     .font(.system(size: 12))
