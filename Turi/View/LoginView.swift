@@ -25,6 +25,7 @@ struct LoginView: View {
                 Text("Login")
                     .foregroundStyle(.white)
                     .font(.custom("Inknut Antiqua", size: 24))
+                    .padding(.bottom, -22)
                 
                 ZStack(alignment: .leading) {
                     if email.isEmpty {
@@ -37,6 +38,7 @@ struct LoginView: View {
                         .padding()
                         .foregroundStyle(.white)
                         .background(Color.clear)
+                        .frame(height: 45)
                         .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
                         )
@@ -53,6 +55,7 @@ struct LoginView: View {
                     SecureField("Senha:", text: $password)
                         .padding()
                         .background(Color.clear)
+                        .frame(height: 45)
                         .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
                         )
@@ -61,6 +64,7 @@ struct LoginView: View {
                 Text("Esqueceu a senha?")
                     .foregroundStyle(.white)
                     .font(.custom("Inknut Antiqua", size: 12))
+                    .padding(.top, -15)
                 
                  Button(action: {
                 print("Botão de login clicado")
