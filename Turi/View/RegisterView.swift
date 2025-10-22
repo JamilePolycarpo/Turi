@@ -25,13 +25,20 @@ struct RegisterView: View {
                     .foregroundStyle(.white)
 //                    .font(.system(size: 32))
                 
-                TextField("Nome:", text: $name)
-                    .padding()
-                    .background(Color.clear)
-                    .overlay(RoundedRectangle(cornerRadius: 40)
+                ZStack(alignment: .leading) {
+                    if name.isEmpty {
+                        Text("Nome:")
+                            .foregroundStyle(.white.opacity(1.0))
+                            .padding(.leading, 40)
+                    }
+                    TextField("", text: $name)
+                        .padding()
+                        .background(Color.clear)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
+                        )
+                        .padding(.horizontal, 24)
+                }
                 
                 TextField("e-mail:", text: $email)
                     .padding()
