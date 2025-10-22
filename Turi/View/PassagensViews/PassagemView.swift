@@ -5,7 +5,7 @@
 //  Created by Jamile Marian Polycarpo on 03/10/25.
 //
 
-internal import SwiftUI
+import SwiftUI
 
 struct PassagemView: View {
     @State private var isRoundTrip: Bool = false
@@ -31,8 +31,8 @@ struct PassagemView: View {
                     VStack(alignment: .leading, spacing: 20) {
                         HStack {
                             Text("Ida e volta")
-                                .font(.subheadline)
-                                .foregroundColor(.white)
+                                .font(.custom("InknutAntiqua-Regular", size: 12))
+                                .foregroundColor(Color("FontBackground"))
                             Toggle("", isOn: $isRoundTrip)
                                 .labelsHidden()
                                 .toggleStyle(SwitchToggleStyle(tint: .white))

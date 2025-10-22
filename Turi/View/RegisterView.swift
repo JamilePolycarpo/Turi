@@ -5,7 +5,7 @@
 //  Created by Andre Luiz Tonon on 12/10/25.
 //
 
-internal import SwiftUI
+import SwiftUI
 
 struct RegisterView: View {
     @State private var name: String = ""
@@ -103,20 +103,36 @@ struct RegisterView: View {
                 }
                 
                 // Botão
-                 Button(action: {
-                print("Botão de login clicado")
-            }) {
-                Text("Entrar")
-                    .foregroundStyle(.colorBackground)
-                    .font(.custom("InknutAntiqua", size: 24))
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(40)
-                    .padding(.horizontal, 30)
+                if #available(iOS 17.0, *) {
+                    NavigationLink {
+                        // TODO: Inject real bindings/environment objects when wiring navigation
+                        HomeView(hideTabBar: .constant(false), viagemVM: .init())
+                    } label: {
+                        Text("Entrar")
+                            .font(.custom("InknutAntiqua-Regular", size: 24))
+                            .foregroundStyle(Color("ColorBackground"))
+                            .frame(maxWidth: .infinity)
+                            .background(Color("FontBackground"))
+                            .cornerRadius(50)
+                            .padding(.horizontal, 30)
+                    }
+                } else {
+                    // Fallback for earlier iOS versions
+                    Button(action: {}) {
+                        Text("Entrar")
+                            .foregroundStyle(.colorBackground)
+                            .font(.custom("InknutAntiqua", size: 24))
+                            .fontWeight(.bold)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.white.opacity(0.6))
+                            .cornerRadius(40)
+                            .padding(.horizontal, 30)
+                    }
+                    .disabled(true)
+                }
             }
-            }
+            
         }
         .ignoresSafeArea()
     }

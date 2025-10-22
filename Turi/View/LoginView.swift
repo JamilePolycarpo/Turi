@@ -5,7 +5,7 @@
 //  Created by Andre Luiz Tonon on 07/10/25.
 //
 
-internal import SwiftUI
+import SwiftUI
 
 struct LoginView: View {
     @State private var email: String = ""
@@ -15,20 +15,36 @@ struct LoginView: View {
         ZStack {
             Color.colorBackground
             
-            VStack (spacing: 20) {
-                Text("Tenha o mundo nas suas mãos")
-                    .foregroundStyle(.white)
-                    .fontWeight(.bold)
-                    .font(.largeTitle)
-                    .multilineTextAlignment(.center)
+            VStack (alignment: .center, spacing: 20) {
+                CompactTextSwiftUI(
+                    text: "Tenha o mundo nas suas mãos",
+                    fontName: "InknutAntiqua-Light",
+                    fontSize: 32,
+                    lineHeightMultiple: 0.7,
+                    textColor: Color("FontBackground"),
+                    numberOfLines: 3,
+                    alignment: .center,
+                    shadowColor: nil
+                )
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.horizontal, 24)
                 
-                Text("Login")
-                    .foregroundStyle(.white)
-                    .font(.title)
+                CompactTextSwiftUI(
+                    text: "Login",
+                    fontName: "InknutAntiqua-Light",
+                    fontSize: 32,
+                    lineHeightMultiple: 0.7,
+                    textColor: Color("FontBackground"),
+                    numberOfLines: 1,
+                    alignment: .center,
+                    shadowColor: nil
+                )
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.horizontal, 24)
                 
                 TextField("E-mail:", text: $email)
                     .padding()
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color("FontBackground"))
                     .background(Color.clear)
                     .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
@@ -44,15 +60,16 @@ struct LoginView: View {
                     .padding(.horizontal, 24)
                 
                 Text("Esqueceu a senha?")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color("FontBackground"))
                     .font(.callout)
                     .fontWeight(.semibold)
+                    .multilineTextAlignment(.center)
                 
                  Button(action: {
                 print("Botão de login clicado")
             }) {
                 Text("Entrar")
-                    .foregroundStyle(.colorBackground)
+                    .foregroundStyle(Color("ColorBackground"))
                     .font(.system(size: 24))
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
@@ -66,6 +83,7 @@ struct LoginView: View {
                     .foregroundStyle(.white)
                     .font(.system(size: 24))
                     .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
                 
                 Button(action: {
                         print("Login com Google")
@@ -103,9 +121,10 @@ struct LoginView: View {
                     }
 
                 Text("Ainda não tem conta? Cadastre-se!")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color("FontBackground"))
                     .font(.system(size: 12))
                     .fontWeight(.semibold)
+                    .multilineTextAlignment(.center)
             }
         }
         .ignoresSafeArea()
