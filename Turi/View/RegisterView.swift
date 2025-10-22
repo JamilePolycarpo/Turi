@@ -107,28 +107,30 @@ struct RegisterView: View {
                         Image(systemName: "checkmark")
                             .foregroundStyle(.white)
                             .font(.system(size: 12, weight: .bold))
+                            .padding(.top, -5)
                         
                         Text("uma letra")
                             .foregroundStyle(.white.opacity(0.5))
                             .font(.system(size: 12, weight: .light))
+                            .padding(.top, -5)
                             Spacer()
                     }
                     .padding(.horizontal, 40)
-                    .padding(.top, 1)
                     
                     HStack (spacing: 10){
                         
                         Image(systemName: "checkmark")
                             .foregroundStyle(.white)
                             .font(.system(size: 12, weight: .bold))
+                            .padding(.top, -5)
                         
                         Text("um número")
                             .foregroundStyle(.white.opacity(0.5))
                             .font(.system(size: 12, weight: .light))
+                            .padding(.top, -5)
                             Spacer()
                     }
                     .padding(.horizontal, 40)
-                    .padding(.top, 1)
                 }
                 
                 // Botão
