@@ -40,13 +40,21 @@ struct RegisterView: View {
                         .padding(.horizontal, 24)
                 }
                 
-                TextField("e-mail:", text: $email)
-                    .padding()
-                    .background(Color.clear)
-                    .overlay(RoundedRectangle(cornerRadius: 40)
+                
+                ZStack(alignment: .leading) {
+                    if email.isEmpty {
+                        Text("e-mail:")
+                            .foregroundStyle(.white.opacity(1.0))
+                            .padding(.leading, 40)
+                    }
+                    TextField("", text: $email)
+                        .padding()
+                        .background(Color.clear)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
+                        )
+                        .padding(.horizontal, 24)
+                }
                 
                 
                 // Como colocar a figura do olho ao lado
