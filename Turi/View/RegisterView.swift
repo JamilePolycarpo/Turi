@@ -58,13 +58,20 @@ struct RegisterView: View {
                 
                 
                 // Como colocar a figura do olho ao lado
-                TextField("senha:", text: $password)
-                    .padding()
-                    .background(Color.clear)
-                    .overlay(RoundedRectangle(cornerRadius: 40)
+                ZStack(alignment: .leading) {
+                    if password.isEmpty {
+                        Text("senha:")
+                            .foregroundStyle(.white.opacity(1.0))
+                            .padding(.leading, 40)
+                    }
+                    TextField("", text: $password)
+                        .padding()
+                        .background(Color.clear)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
+                        )
+                        .padding(.horizontal, 24)
+                }
                 
                 TextField("confirme sua senha:", text: $confirmPassword)
                     .padding()
