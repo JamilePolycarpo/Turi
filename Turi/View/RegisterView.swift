@@ -142,7 +142,7 @@ struct RegisterView: View {
                     .font(.custom("InknutAntiqua", size: 24))
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
-                    .padding()
+                    .padding(.vertical, 14)
                     .background(Color.white)
                     .cornerRadius(40)
                     .padding(.horizontal, 30)
