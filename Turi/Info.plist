@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Inknut_Antiqua.ttf</string>
+		<string>InknutAntiqua-Regular.ttf</string>
+		<string>InknutAntiqua-Bold.ttf</string>
+		<string>InknutAntiqua-ExtraBold.ttf</string>
+		<string>InknutAntiqua-Light.ttf</string>
+		<string>InknutAntiqua-SemiBold.ttf</string>
+		<string>InknutAntiqua-Medium</string>
+	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Precisamos da sua localização para mostrar lugares próximos a você no mapa.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Precisamos da sua localização para mostrar lugares próximos a você no mapa.</string>
+</dict>
+</plist>
