@@ -73,13 +73,20 @@ struct RegisterView: View {
                         .padding(.horizontal, 24)
                 }
                 
-                TextField("confirme sua senha:", text: $confirmPassword)
-                    .padding()
-                    .background(Color.clear)
-                    .overlay(RoundedRectangle(cornerRadius: 40)
+                ZStack(alignment: .leading) {
+                    if confirmPassword.isEmpty {
+                        Text("confirme sua senha:")
+                            .foregroundStyle(.white.opacity(1.0))
+                            .padding(.leading, 40)
+                    }
+                    TextField("", text: $confirmPassword)
+                        .padding()
+                        .background(Color.clear)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
+                        )
+                        .padding(.horizontal, 24)
+                }
               
                 VStack(alignment: .leading) {
                     HStack (spacing: 10){
