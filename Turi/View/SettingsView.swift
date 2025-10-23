@@ -24,12 +24,14 @@ struct SettingsView: View {
                 Text("Ajustes")
                     .foregroundStyle(.white)
                     .font(.system(size: 32))
-                    .padding()
+                    .padding(.horizontal, 30)
+                    .padding(.top, -100)
                 VStack{
                     Image(systemName: "person.circle")
                         .foregroundStyle(.white)
                         .fontWeight(.ultraLight)
                         .font(.system(size: 195))
+                        .padding(.horizontal, 100)
                     
                 }
                 VStack (alignment: .leading){
@@ -76,6 +78,29 @@ struct SettingsView: View {
                         .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1))
                         .padding(.horizontal, 24)
+                    
+                    Button(action: {
+                                print("Usuário saiu do app")
+                            }) {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "rectangle.portrait.and.arrow.forward")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(.colorBackground)
+                                    Text("Sair do app")
+                                        .foregroundColor(.colorBackground)
+                                        .font(.custom("Inknut Antiqua", size: 12))
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding()
+                                .background(Color.white)
+                                .cornerRadius(40)
+                                .overlay(RoundedRectangle(cornerRadius: 40)
+                                    .stroke(Color.white, lineWidth: 1))
+                                .padding(.horizontal, 24)
+
+                            }
                 }
                 
             }

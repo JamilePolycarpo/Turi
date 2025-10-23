@@ -4,29 +4,36 @@ internal import SwiftUI
 struct TuriApp: App {
     @StateObject private var viagem = ViagemViewModel()
 
+ 
     var body: some Scene {
         WindowGroup {
-            GeometryReader { geo in
+           // GeometryReader { geo in
                 // Usamos GeometryReader para capturar o tamanho real da janela
-                let width = geo.size.width
-                let height = geo.size.height
-                let isCompact = width < 600 // iPhone vs iPad
+               
                 
-                ZStack{
-                    HomeView()
-                        .environmentObject(viagem)
+               // ZStack{
+                //    HomeView()
+                  //      .environmentObject(viagem)
                     
-                    
-                   /* TabBarView()
-                        .environmentObject(viagem)
-                    // Adapta margens conforme o dispositivo
-                        .padding(.horizontal, isCompact ? 0 : 24)
-                        .padding(.vertical, isCompact ? 0 : 12)
+                   // Spacer()
+            if #available(iOS 17.0, *) {
+                TabBarView()
+                    .environmentObject(viagem)
+            } else {
+                // Fallback for earlier iOS versions
+                // Replace `HomeView()` with an appropriate fallback view if available
+                Text("Unsupported iOS version")
+                    .environmentObject(viagem)
+            }
+                       // Adapta margens conforme o dispositivo
+                       // .padding(.horizontal, isCompact ? 0 : 24)
+                       //.padding(.vertical, isCompact ? 0 : 12)
                     // Redimensiona fontes dinamicamente
-                        .environment(\.dynamicTypeSize, isCompact ? .medium : .xxxLarge)
-                        .frame(width: width, height: height)
+                        //.environment(\.dynamicTypeSize, isCompact ? .medium : .xxxLarge)
+                
+                       // .frame(width: width, height: 200)
                     // Usa o fundo global
-                        .background(
+                       /* .background(
                             ZStack {
                                 Color("ColorBackground")
                                     .ignoresSafeArea()
@@ -36,9 +43,9 @@ struct TuriApp: App {
                                     .ignoresSafeArea()
                             }
                         )*/
-                        .preferredColorScheme(.light)
-                }
-            }
+                       // .preferredColorScheme(.light)
+                //}.background(.blue)
+           // }
         }
     }
 }

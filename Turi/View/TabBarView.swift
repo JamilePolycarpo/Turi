@@ -1,133 +1,155 @@
 internal import SwiftUI
 
 enum TabItem: Int, CaseIterable {
-    case home = 0, passagem, maps, chat, settings
+    case home
+    case passagem
+    case maps
+    case chat
+    case settings
 
     var iconName: String {
         switch self {
-        case .home:      return "house"
-        case .passagem:  return "ticket"
-        case .maps:      return "map"
-        case .chat:      return "bubble.left.and.bubble.right"
-        case .settings:  return "person"
+        case .home: return "house"
+        case .passagem: return "magnifyingglass"
+        case .maps: return "mappin"
+        case .chat: return "bubble.left"
+        case .settings: return "gearshape"
         }
     }
 
     var iconNameFill: String {
         switch self {
-        case .home:      return "house.fill"
-        case .passagem:  return "ticket.fill"
-        case .maps:      return "map.fill"
-        case .chat:      return "bubble.left.and.bubble.right.fill"
-        case .settings:  return "person.fill"
+        case .home: return "house.fill"
+        case .passagem: return "magnifyingglass"
+        case .maps: return "mappin.fill"
+        case .chat: return "bubble.left.fill"
+        case .settings: return "gearshape.fill"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .home: return "Home"
+        case .passagem: return "Buscar"
+        case .maps: return "Mapas"
+        case .chat: return "Chat"
+        case .settings: return "Config"
         }
     }
 }
 
+@available(iOS 17.0, *)
 struct TabBarView: View {
     @State private var selectedTab: TabItem = .home
-    @Namespace private var tabNS
     @StateObject private var viagem = ViagemViewModel()
+    @State private var hideTabBar = false
 
+   
     var body: some View {
         GeometryReader { geo in
             let safeBottom = geo.safeAreaInsets.bottom
-            let tabHeight = geo.size.height * 0.09
-
             ZStack(alignment: .bottom) {
-                // Conteúdo principal das abas
-                TabView(selection: $selectedTab) {
-                    HomeView().tag(TabItem.home)
-                    PassagemView().tag(TabItem.passagem)
-                    MapsView().tag(TabItem.maps)
-                    ChatView().tag(TabItem.chat)
-                    SettingsView().tag(TabItem.settings)
+                Group {
+                    switch selectedTab {
+                    case .home:
+                        if #available(iOS 17.0, *) {
+                            NavigationStack { HomeView(hideTabBar: $hideTabBar) }
+                        } else {
+                            NavigationView { HomeView(hideTabBar: $hideTabBar) }
+                        }
+                    case .passagem:
+                        if #available(iOS 17.0, *) {
+                            NavigationStack { PassagemView() }
+                        } else {
+                            NavigationView { PassagemView() }
+                        }
+                    case .maps:
+                        if #available(iOS 17.0, *) {
+                            NavigationStack { MapsView() }
+                        } else {
+                            NavigationView { MapsView() }
+                        }
+                    case .chat:
+                        if #available(iOS 17.0, *) {
+                            NavigationStack { ChatView() }
+                        } else {
+                            NavigationView { ChatView() }
+                        }
+                    case .settings:
+                        if #available(iOS 17.0, *) {
+                            NavigationStack { SettingsView() }
+                        } else {
+                            NavigationView { SettingsView() }
+                        }
+                    }
                 }
                 .environmentObject(viagem)
-                .onAppear { UITabBar.appearance().isHidden = true }
-                .toolbar(.hidden, for: .tabBar)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                // Tab bar customizada com blur e imagem de fundo
-                CustomTabBar(selectedTab: $selectedTab, ns: tabNS)
-                    .frame(height: tabHeight)
-                    .padding(.bottom, safeBottom > 0 ? safeBottom : 10)
+                if !hideTabBar {
+                    CustomTabBar(selectedTab: $selectedTab)
+                        .frame(height: max(geo.size.height * 0.11, 90))
+                        .padding(.horizontal, max(geo.size.width * 0.06, 24))
+                        .padding(.bottom, safeBottom > 0 ? safeBottom : max(geo.size.height * 0.012, 10))
+                }
             }
-            .ignoresSafeArea(edges: .bottom)
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
 
 struct CustomTabBar: View {
     @Binding var selectedTab: TabItem
-    var ns: Namespace.ID
-    
+
     var body: some View {
-        GeometryReader { geo in
-            let width = geo.size.width
-            let spacing = width < 400 ? 10.0 : 16.0
-
-            ZStack {
-                RoundedRectangle(cornerRadius:0, style: .continuous)
-                                .fill(Color(.clear))
-                                .frame(maxWidth: .infinity, maxHeight: 130)
-                                .background(
-                                    ZStack {
-                                        Color("ColorBackground")
-                                            .ignoresSafeArea(edges: .all)
-                                        Image("background")
-                                            .resizable()
-                                            .scaledToFill()
-                                            .ignoresSafeArea(edges: .all)
-                                    }
-                                )
-                                .ignoresSafeArea(edges: .all)
-                                .clipped()
-                                .blur(radius: 10)
-
-                // 🔹 Ícones das abas
-                HStack(spacing: spacing) {
-                    ForEach(TabItem.allCases, id: \.self) { item in
-                        let isSelected = selectedTab == item
-
-                        Button {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
-                                selectedTab = item
-                            }
-                        } label: {
-                            Image(systemName: isSelected ? item.iconNameFill : item.iconName)
-                                .font(.system(size: width < 400 ? 18 : 22, weight: .semibold))
-                                .foregroundColor(isSelected ? Color("FontBackground") : Color("ColorBackground"))
-                                .scaleEffect(isSelected ? 1.15 : 1.0)
-                                .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isSelected)
-                                .padding(.vertical, 12)
-                                .padding(.horizontal, isSelected ? 22 : 14)
-                                .background(
-                                    Group {
-                                        if isSelected {
-                                            Capsule()
-                                                .fill(Color("ColorBackground"))
-                                                .matchedGeometryEffect(id: "TAB_BG", in: ns)
-                                        }
-                                    }
-                                )
+        GeometryReader{ geo in
+            HStack {
+                ForEach(TabItem.allCases, id: \.self) { item in
+                    let isSelected = selectedTab == item
+                    
+                    Button {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+                            selectedTab = item
                         }
-                        .buttonStyle(.plain)
-                        
+                    } label: {
+                        HStack(spacing: 8) {
+                            Image(systemName: isSelected ? item.iconNameFill : item.iconName)
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(isSelected ? Color("FontBackground") : Color("ColorBackground"))
+                                .scaleEffect(isSelected ? 1.2 : 1.0)
+                                .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isSelected)
+                            
+                        }
+                       
+                        .padding(.vertical, 12)
+                        .background(
+                            Capsule()
+                                .fill(isSelected ? Color("ColorBackground") : Color.clear)
+                                .frame(width: geo.size.width * 0.14, height: geo.size.height * 0.45)
+                                .animation(.easeInOut(duration: 0.25), value: isSelected)
+                        )
                     }
+                    .buttonStyle(.plain)
+                    .frame(maxWidth: .infinity)
                 }
-                .padding(.horizontal, spacing)
-                .padding(.vertical, 10)
-                .background(Color("FontBackground").opacity(0.95))
-                .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
-                .shadow(color: Color("ColorBackground").opacity(0.35), radius: 12, x: 0, y: 4)
-                .padding(.horizontal, 16)
             }
-            .ignoresSafeArea(edges: .bottom)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 40, style: .continuous)
+                    .fill(Color("FontBackground"))
+                    .frame(height: geo.size.height * 0.65)
+                   
+                    .shadow(color: Color("ColorBackground"), radius: 50, x: 0, y: 3)
+            ) .frame(height: geo.size.height * 1.8)
         }
     }
 }
 
 #Preview {
-    TabBarView()
+    if #available(iOS 17.0, *) {
+        TabBarView()
+    } else {
+        // Fallback on earlier versions
+    }
 }
