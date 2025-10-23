@@ -7,9 +7,10 @@
 import SwiftUI
 import Combine
 import Foundation
+import UIKit
 
 @available(iOS 17.0, *)
-private struct CarouselSlide: View {
+private struct HomeCarouselSlide: View {
     let imageName: String
     let title: String
     let description: String
@@ -28,19 +29,25 @@ private struct CarouselSlide: View {
                 .frame(height: height)
 
             VStack(alignment: .leading, spacing: 8) {
-                CompactText(
+                TypographyText(
                     text: title,
                     fontSize: 32,
                     lineHeightMultiple: 0.75,
-                    numberOfLines: 0
+                    numberOfLines: 0,
+                    customFontName: "InknutAntiqua-Light",
+                    textColor: Color("FontBackground"),
+                    alignment: .leading
                 )
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
-                CompactText(
+                TypographyText(
                     text: description,
                     fontSize: 16,
                     lineHeightMultiple: 0.6,
-                    numberOfLines: 2
+                    numberOfLines: 2,
+                    customFontName: nil,
+                    textColor: Color("FontBackground"),
+                    alignment: .leading
                 )
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -83,40 +90,86 @@ private struct TripRow: View {
     }
 }
 
-@available(iOS 15.0, *)
-private struct TypographyText: View {
+
+// Utilitário: cria AttributedString com line height "travado" + baselineOffset
+func makeAttributed(
+    _ text: String,
+    fontName: String?,
+    size: CGFloat,
+    lineHeightMultiple: CGFloat,
+    alignment: NSTextAlignment = .left,
+    color: UIColor? = nil
+) -> AttributedString {
+    let font: UIFont = {
+        if let fontName, let f = UIFont(name: fontName, size: size) {
+            return f
+        }
+        return .systemFont(ofSize: size)
+    }()
+
+    // Altura natural da linha dessa fonte
+    let natural = font.lineHeight
+    // Altura de linha desejada
+    let target = max(1, natural * lineHeightMultiple)
+
+    let paragraph = NSMutableParagraphStyle()
+    paragraph.alignment = alignment
+    paragraph.minimumLineHeight = target   // trava altura
+    paragraph.maximumLineHeight = target   // trava altura
+    paragraph.lineBreakMode = .byWordWrapping
+
+    // Centraliza verticalmente o "corpo" da fonte dentro da linha-alvo
+    // Se target < natural, o offset fica negativo (aproxima as linhas)
+    let baseline = (target - natural) / 2.0
+
+    var attrs: [NSAttributedString.Key: Any] = [
+        .font: font,
+        .paragraphStyle: paragraph,
+        .baselineOffset: baseline
+    ]
+    if let color {
+        attrs[.foregroundColor] = color
+    }
+
+    let ns = NSAttributedString(string: text, attributes: attrs)
+    return AttributedString(ns)
+}
+
+// Versão SwiftUI que usa o utilitário acima
+struct TypographyText: View {
     let text: String
     let fontSize: CGFloat
     let lineHeightMultiple: CGFloat
     let numberOfLines: Int
     var customFontName: String? = nil
+    var textColor: Color = .primary
+    var alignment: TextAlignment = .leading
 
     var body: some View {
         Text(attributed)
             .lineLimit(numberOfLines)
-            .multilineTextAlignment(.leading)
+            .multilineTextAlignment(alignment)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     private var attributed: AttributedString {
-        // Build via NSAttributedString for widest SDK compatibility (iOS 15+)
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.lineHeightMultiple = lineHeightMultiple
-        paragraph.alignment = .left
+        let uiAlign: NSTextAlignment = {
+            switch alignment {
+            case .leading:  return .left
+            case .center:   return .center
+            case .trailing: return .right
+            @unknown default: return .left
+            }
+        }()
 
-        let font: UIFont
-        if let customFontName, let custom = UIFont(name: customFontName, size: fontSize) {
-            font = custom
-        } else {
-            font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
-        }
-
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: font,
-            .paragraphStyle: paragraph
-        ]
-
-        let nsAttr = NSAttributedString(string: text, attributes: attributes)
-        return AttributedString(nsAttr)
+        return makeAttributed(
+            text,
+            fontName: customFontName,
+            size: fontSize,
+            lineHeightMultiple: lineHeightMultiple, // ex.: 0.75 ou 0.8 p/ aproximar
+            alignment: uiAlign,
+            color: UIColor(textColor)
+        )
     }
 }
 
@@ -150,11 +203,11 @@ struct HomeView: View {
                         .scaledToFill()
                         .ignoresSafeArea(edges: .all)
                     
-                    VStack(spacing: 0) {
+                    VStack {
                         // Carrossel no topo da safe area
                         TabView(selection: $currentIndex) {
                             ForEach(Array(carouselImages.enumerated()), id: \.offset) { index, imageName in
-                                CarouselSlide(
+                                HomeCarouselSlide(
                                     imageName: imageName,
                                     title: carouselTitles[index],
                                     description: carouselDescriptions[index],
@@ -168,13 +221,20 @@ struct HomeView: View {
                         .frame(width: width, height: carouselHeight)
                         .clipped()
                         .ignoresSafeArea(.container, edges: .top)
-                        .id(currentIndex)
 
                         HStack {
-                            CompactText(text: "Sua lista de viagem ", fontSize: 32, lineHeightMultiple: 0.7, numberOfLines: 2)
+                            TypographyText(
+                                text: "Sua lista de viagem ",
+                                fontSize: 42,
+                                lineHeightMultiple:0.5,
+                                numberOfLines: 2,
+                                //customFontName: "InknutAntiqua-Light",
+                                textColor: Color("FontBackground"),
+                                alignment: .leading
+                            )
                             .fixedSize(horizontal: false, vertical: true)
                              
-                             Spacer()
+                         Spacer()
                              
                             NavigationLink(destination: AddViagemView(hideTabBar: $hideTabBar)) {
                                 Image(systemName: "plus.circle.fill")
@@ -182,7 +242,8 @@ struct HomeView: View {
                                     .foregroundColor(Color("FontBackground"))
                             }
                         }
-                        .padding(.vertical, height * 0.01)
+                        .padding(.top, -height * 0.04)
+                       // .padding(.vertical, height * 0.)
                         .padding(.horizontal, max(width * 0.05, 20))
 
                         List {
@@ -197,7 +258,7 @@ struct HomeView: View {
                         }
                         .scrollContentBackground(.hidden)
                         .listStyle(.plain)
-                        .padding(.top, 10)
+                        .padding(.top, 4)
                     }
                 }
                 .onChange(of: scenePhase) { _, newPhase in
@@ -213,11 +274,9 @@ struct HomeView: View {
         }
     }
 }
-#Preview {
-    if #available(iOS 17.0, *) {
-        HomeView(hideTabBar: .constant(false))
-            .environmentObject(ViagemViewModel())
-    } else {
-        // Fallback on earlier versions
-    }
+
+@available(iOS 17.0, *)
+#Preview("HomeView") {
+    HomeView(hideTabBar: Binding.constant(false))
+        .environmentObject(ViagemViewModel())
 }

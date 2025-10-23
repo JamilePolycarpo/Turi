@@ -5,7 +5,7 @@
 //  Created by Andre Luiz Tonon on 22/10/25.
 //
 
-internal import SwiftUI
+import SwiftUI
 
 struct PasswordField: View {
     let placeholder: String

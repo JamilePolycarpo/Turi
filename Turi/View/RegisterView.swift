@@ -17,18 +17,23 @@ struct RegisterView: View {
         ZStack {
             // BackGround
             Color("ColorBackground")
+                .ignoresSafeArea(edges: .all)
+            Image("background")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea(edges: .all)
             
             // Verificar os Espaçamentos e o placeholder
             VStack (spacing: 20){
-                Text("Cadastre-se")
-                    .font(.custom("Inknut Antiqua", size: 32))
+                Text("Cadastre-se pa só fazendo teste")
+                    .font(.custom("InknutAntiqua-Regular", size: 32))
                     .foregroundStyle(.white)
 //                    .font(.system(size: 32))
                 
                 ZStack(alignment: .leading) {
                     if name.isEmpty {
-                        Text("Nome:")
-                            .foregroundStyle(.white.opacity(1.0))
+                        Text("nome:")
+                            .foregroundStyle(.white.opacity(0.7))
                             .padding(.leading, 40)
                     }
                     TextField("", text: $name)
@@ -44,7 +49,7 @@ struct RegisterView: View {
                 ZStack(alignment: .leading) {
                     if email.isEmpty {
                         Text("e-mail:")
-                            .foregroundStyle(.white.opacity(1.0))
+                            .foregroundStyle(.white.opacity(0.7))
                             .padding(.leading, 40)
                     }
                     TextField("", text: $email)
@@ -61,7 +66,7 @@ struct RegisterView: View {
                 ZStack(alignment: .leading) {
                     if password.isEmpty {
                         Text("senha:")
-                            .foregroundStyle(.white.opacity(1.0))
+                            .foregroundStyle(.white.opacity(0.7))
                             .padding(.leading, 40)
                     }
                     TextField("", text: $password)
@@ -76,7 +81,7 @@ struct RegisterView: View {
                 ZStack(alignment: .leading) {
                     if confirmPassword.isEmpty {
                         Text("confirme sua senha:")
-                            .foregroundStyle(.white.opacity(1.0))
+                            .foregroundStyle(.white.opacity(0.7))
                             .padding(.leading, 40)
                     }
                     TextField("", text: $confirmPassword)
@@ -138,7 +143,7 @@ struct RegisterView: View {
                 if #available(iOS 17.0, *) {
                     NavigationLink {
                         // TODO: Inject real bindings/environment objects when wiring navigation
-                        HomeView(hideTabBar: .constant(false), viagemVM: .init())
+                       TabBarView()
                     } label: {
                         Text("Entrar")
                             .font(.custom("InknutAntiqua-Regular", size: 24))

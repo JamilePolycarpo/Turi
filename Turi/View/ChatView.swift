@@ -42,12 +42,12 @@ struct ChatView: View {
     var body: some View {
         ZStack {
             // Fundo com textura/gradiente
-            LinearGradient(
-                gradient: Gradient(colors: [TuriColors.teal, TuriColors.deepGreen]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            Color("ColorBackground")
+                .ignoresSafeArea(edges: .all)
+            Image("background")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea(edges: .all)
 
             VStack(spacing: 0) {
                 HeaderView()
