@@ -83,6 +83,43 @@ private struct TripRow: View {
     }
 }
 
+@available(iOS 15.0, *)
+private struct TypographyText: View {
+    let text: String
+    let fontSize: CGFloat
+    let lineHeightMultiple: CGFloat
+    let numberOfLines: Int
+    var customFontName: String? = nil
+
+    var body: some View {
+        Text(attributed)
+            .lineLimit(numberOfLines)
+            .multilineTextAlignment(.leading)
+    }
+
+    private var attributed: AttributedString {
+        // Build via NSAttributedString for widest SDK compatibility (iOS 15+)
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineHeightMultiple = lineHeightMultiple
+        paragraph.alignment = .left
+
+        let font: UIFont
+        if let customFontName, let custom = UIFont(name: customFontName, size: fontSize) {
+            font = custom
+        } else {
+            font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
+        }
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .paragraphStyle: paragraph
+        ]
+
+        let nsAttr = NSAttributedString(string: text, attributes: attributes)
+        return AttributedString(nsAttr)
+    }
+}
+
 @available(iOS 17.0, *)
 struct HomeView: View {
     @Environment(\.scenePhase) private var scenePhase
@@ -134,15 +171,8 @@ struct HomeView: View {
                         .id(currentIndex)
 
                         HStack {
-                             CompactText(
-                                 text: "Sua lista de viagens",
-                                 fontSize: min(width * 0.08, 32),
-                                 lineHeightMultiple: 0.75,
-                                 textColor: Color("FontBackground"),
-                                 numberOfLines: 2,
-                                 shadowColor: nil
-                             )
-                             .fixedSize(horizontal: false, vertical: true)
+                            CompactText(text: "Sua lista de viagem ", fontSize: 32, lineHeightMultiple: 0.7, numberOfLines: 2)
+                            .fixedSize(horizontal: false, vertical: true)
                              
                              Spacer()
                              
@@ -191,4 +221,3 @@ struct HomeView: View {
         // Fallback on earlier versions
     }
 }
-
