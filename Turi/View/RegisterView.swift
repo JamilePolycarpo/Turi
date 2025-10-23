@@ -25,39 +25,68 @@ struct RegisterView: View {
                     .foregroundStyle(.white)
 //                    .font(.system(size: 32))
                 
-                TextField("Nome:", text: $name)
-                    .padding()
-                    .background(Color.clear)
-                    .overlay(RoundedRectangle(cornerRadius: 40)
+                ZStack(alignment: .leading) {
+                    if name.isEmpty {
+                        Text("Nome:")
+                            .foregroundStyle(.white.opacity(1.0))
+                            .padding(.leading, 40)
+                    }
+                    TextField("", text: $name)
+                        .padding()
+                        .background(Color.clear)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
+                        )
+                        .padding(.horizontal, 24)
+                }
                 
-                TextField("e-mail:", text: $email)
-                    .padding()
-                    .background(Color.clear)
-                    .overlay(RoundedRectangle(cornerRadius: 40)
+                
+                ZStack(alignment: .leading) {
+                    if email.isEmpty {
+                        Text("e-mail:")
+                            .foregroundStyle(.white.opacity(1.0))
+                            .padding(.leading, 40)
+                    }
+                    TextField("", text: $email)
+                        .padding()
+                        .background(Color.clear)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
+                        )
+                        .padding(.horizontal, 24)
+                }
                 
                 
                 // Como colocar a figura do olho ao lado
-                TextField("senha:", text: $password)
-                    .padding()
-                    .background(Color.clear)
-                    .overlay(RoundedRectangle(cornerRadius: 40)
+                ZStack(alignment: .leading) {
+                    if password.isEmpty {
+                        Text("senha:")
+                            .foregroundStyle(.white.opacity(1.0))
+                            .padding(.leading, 40)
+                    }
+                    TextField("", text: $password)
+                        .padding()
+                        .background(Color.clear)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
+                        )
+                        .padding(.horizontal, 24)
+                }
                 
-                TextField("confirme sua senha:", text: $confirmPassword)
-                    .padding()
-                    .background(Color.clear)
-                    .overlay(RoundedRectangle(cornerRadius: 40)
+                ZStack(alignment: .leading) {
+                    if confirmPassword.isEmpty {
+                        Text("confirme sua senha:")
+                            .foregroundStyle(.white.opacity(1.0))
+                            .padding(.leading, 40)
+                    }
+                    TextField("", text: $confirmPassword)
+                        .padding()
+                        .background(Color.clear)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
+                        )
+                        .padding(.horizontal, 24)
+                }
               
                 VStack(alignment: .leading) {
                     HStack (spacing: 10){
@@ -78,28 +107,30 @@ struct RegisterView: View {
                         Image(systemName: "checkmark")
                             .foregroundStyle(.white)
                             .font(.system(size: 12, weight: .bold))
+                            .padding(.top, -5)
                         
                         Text("uma letra")
                             .foregroundStyle(.white.opacity(0.5))
                             .font(.system(size: 12, weight: .light))
+                            .padding(.top, -5)
                             Spacer()
                     }
                     .padding(.horizontal, 40)
-                    .padding(.top, 1)
                     
                     HStack (spacing: 10){
                         
                         Image(systemName: "checkmark")
                             .foregroundStyle(.white)
                             .font(.system(size: 12, weight: .bold))
+                            .padding(.top, -5)
                         
                         Text("um número")
                             .foregroundStyle(.white.opacity(0.5))
                             .font(.system(size: 12, weight: .light))
+                            .padding(.top, -5)
                             Spacer()
                     }
                     .padding(.horizontal, 40)
-                    .padding(.top, 1)
                 }
                 
                 // Botão
@@ -111,7 +142,7 @@ struct RegisterView: View {
                     .font(.custom("InknutAntiqua", size: 24))
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
-                    .padding()
+                    .padding(.vertical, 14)
                     .background(Color.white)
                     .cornerRadius(40)
                     .padding(.horizontal, 30)
