@@ -47,45 +47,62 @@ struct LoginView: View {
                     .foregroundStyle(Color("FontBackground"))
                     .background(Color.clear)
                     .overlay(RoundedRectangle(cornerRadius: 40)
+
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
+                        )
+                        .padding(.horizontal, 24)
+                }
                 
-                TextField("Senha:", text: $password)
-                    .padding()
-                    .background(Color.clear)
-                    .overlay(RoundedRectangle(cornerRadius: 40)
+                ZStack(alignment: .leading) {
+                    if password.isEmpty {
+                        Text("Senha:")
+                            .foregroundStyle(.white.opacity(1.0))
+                            .padding(.leading, 40)
+                    }
+                    
+                    SecureField("Senha:", text: $password)
+                        .padding()
+                        .background(Color.clear)
+                        .frame(height: 45)
+                        .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1)
-                            )
-                    .padding(.horizontal, 24)
-                
+                        )
+                        .padding(.horizontal, 24)
+                }
                 Text("Esqueceu a senha?")
                     .foregroundStyle(Color("FontBackground"))
                     .font(.callout)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
-                
+
+                  
                  Button(action: {
                 print("Botão de login clicado")
             }) {
                 Text("Entrar")
+
                     .foregroundStyle(Color("ColorBackground"))
                     .font(.system(size: 24))
+
+                   
                     .fontWeight(.bold)
+                    .foregroundStyle(.colorBackground)
                     .frame(maxWidth: .infinity)
-                    .padding()
+                    .frame(height: 44)
                     .background(Color.white)
                     .cornerRadius(40)
                     .padding(.horizontal, 30)
             }
-                
-                Text("Entre com")
-                    .foregroundStyle(.white)
-                    .font(.system(size: 24))
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-                
-                Button(action: {
+
+               
+                VStack(spacing: 15) {
+                    Text("Entre com")
+                        .foregroundStyle(.white)
+                        .font(.custom("Inknut Antiqua", size: 24))
+                        .fontWeight(.bold)
+                        .padding(.bottom, -18)
+                    
+                    Button(action: {
                         print("Login com Google")
                     }) {
                         HStack {
@@ -102,8 +119,8 @@ struct LoginView: View {
                         .cornerRadius(10)
                         .padding(.horizontal, 30)
                     }
-                
-                Button(action: {
+                    
+                    Button(action: {
                         print("Login com Apple")
                     }) {
                         HStack {
@@ -119,8 +136,10 @@ struct LoginView: View {
                         .cornerRadius(10)
                         .padding(.horizontal, 30)
                     }
-
+                }
+                
                 Text("Ainda não tem conta? Cadastre-se!")
+
                     .foregroundStyle(Color("FontBackground"))
                     .font(.system(size: 12))
                     .fontWeight(.semibold)
