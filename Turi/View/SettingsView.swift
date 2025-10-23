@@ -32,6 +32,7 @@ struct SettingsView: View {
                         .fontWeight(.ultraLight)
                         .font(.system(size: 195))
                         .padding(.horizontal, 100)
+                        .padding(.top, -30)
                     
                 }
                 VStack (alignment: .leading){
@@ -54,7 +55,7 @@ struct SettingsView: View {
                         .font(.system(size: 12))
                         .fontWeight(.light)
                         .padding(.leading, 40)
-                        .padding(.top)
+                        .padding(.top, 1)
                     
                     TextField("beltrano@gmail.com", text: $email)
                         .padding()
@@ -69,7 +70,7 @@ struct SettingsView: View {
                         .font(.system(size: 12))
                         .fontWeight(.light)
                         .padding(.leading, 40)
-                        .padding(.top)
+                        .padding(.top, 1)
                     
                     TextField("********", text: $password)
                         .padding()
@@ -78,6 +79,7 @@ struct SettingsView: View {
                         .overlay(RoundedRectangle(cornerRadius: 40)
                             .stroke(Color.white, lineWidth: 1))
                         .padding(.horizontal, 24)
+                        .padding(.bottom, 25)
                     
                     Button(action: {
                                 print("Usuário saiu do app")
@@ -102,12 +104,7 @@ struct SettingsView: View {
 
                             }
                 }
-                
             }
-           
-            
-            
-            
         }
     }
 }
