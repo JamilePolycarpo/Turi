@@ -7,7 +7,7 @@
 
 import Foundation
 import Combine
-internal import SwiftUI
+import SwiftUI
 
 final class ViagemViewModel: ObservableObject {
     @Published var trips: [Trip] = [] {

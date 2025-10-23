@@ -4,9 +4,121 @@
 //
 //  Created by Jamile Marian Polycarpo on 03/10/25.
 //
-
-internal import SwiftUI
+import SwiftUI
 import Combine
+import Foundation
+
+@available(iOS 17.0, *)
+private struct CarouselSlide: View {
+    let imageName: String
+    let title: String
+    let description: String
+    let width: CGFloat
+    let height: CGFloat
+
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            Image(imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: width, height: height)
+                .clipped()
+            Rectangle()
+                .fill(Color.black.opacity(0.3))
+                .frame(height: height)
+
+            VStack(alignment: .leading, spacing: 8) {
+                CompactText(
+                    text: title,
+                    fontSize: 32,
+                    lineHeightMultiple: 0.75,
+                    numberOfLines: 0
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                CompactText(
+                    text: description,
+                    fontSize: 16,
+                    lineHeightMultiple: 0.6,
+                    numberOfLines: 2
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(.leading, 20)
+            .padding(.bottom, 20)
+            .padding(.trailing, 20)
+        }
+        .frame(width: width, height: height)
+        .clipped()
+    }
+}
+
+@available(iOS 17.0, *)
+private struct TripRow: View {
+    let name: String
+    let width: CGFloat
+    let height: CGFloat
+
+    var body: some View {
+        HStack(spacing: width * 0.03) {
+            ZStack {
+                Circle()
+                    .fill(Color("ColorBackground").opacity(0.12))
+                Image(systemName: "airplane")
+                    .foregroundStyle(Color("ColorBackground"))
+                    .font(.system(size: min(width * 0.045, 18), weight: .semibold))
+            }
+            .frame(width: min(width * 0.09, 36), height: min(width * 0.09, 36))
+            Text(name)
+                .font(.custom("InknutAntiqua-Light", size: min(width * 0.08, 16)))
+                .foregroundStyle(Color("ColorBackground"))
+            Spacer()
+        }
+        .padding(.horizontal, width * 0.04)
+        .padding(.vertical, height * 0.018)
+        .background(
+            RoundedRectangle(cornerRadius: width * 0.1, style: .continuous)
+                .fill(Color("FontBackground"))
+        )
+    }
+}
+
+@available(iOS 15.0, *)
+private struct TypographyText: View {
+    let text: String
+    let fontSize: CGFloat
+    let lineHeightMultiple: CGFloat
+    let numberOfLines: Int
+    var customFontName: String? = nil
+
+    var body: some View {
+        Text(attributed)
+            .lineLimit(numberOfLines)
+            .multilineTextAlignment(.leading)
+    }
+
+    private var attributed: AttributedString {
+        // Build via NSAttributedString for widest SDK compatibility (iOS 15+)
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineHeightMultiple = lineHeightMultiple
+        paragraph.alignment = .left
+
+        let font: UIFont
+        if let customFontName, let custom = UIFont(name: customFontName, size: fontSize) {
+            font = custom
+        } else {
+            font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
+        }
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .paragraphStyle: paragraph
+        ]
+
+        let nsAttr = NSAttributedString(string: text, attributes: attributes)
+        return AttributedString(nsAttr)
+    }
+}
 
 @available(iOS 17.0, *)
 struct HomeView: View {
@@ -26,6 +138,10 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             GeometryReader { geo in
+                let width = geo.size.width
+                let height = geo.size.height
+                let carouselHeight = height * 0.35
+                
                 ZStack {
                     Color("ColorBackground")
                         .ignoresSafeArea(edges: .all)
@@ -38,85 +154,41 @@ struct HomeView: View {
                         // Carrossel no topo da safe area
                         TabView(selection: $currentIndex) {
                             ForEach(Array(carouselImages.enumerated()), id: \.offset) { index, imageName in
-                                ZStack(alignment: .bottomLeading) {
-                                    // Imagem de fundo
-                                    Image(imageName)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: geo.size.width,
-                                               height: geo.size.height * 0.35)
-                                        .clipped()
-                                    
-                                    // Overlay escuro para melhor legibilidade
-                                    Rectangle()
-                                        .fill(Color.black.opacity(0.3))
-                                        .frame(height: geo.size.height * 0.35)
-                                    
-                                    // Texto sobreposto
-                                    VStack(alignment: .leading, spacing: 8) {
-                                        Text(carouselTitles[index])
-                                            .font(.system(size: min(geo.size.width * 0.06, 28), weight: .bold))
-                                            .foregroundColor(.white)
-                                            .shadow(color: .black, radius: 2, x: 1, y: 1)
-                                        
-                                        Text(carouselDescriptions[index])
-                                            .font(.system(size: min(geo.size.width * 0.04, 18), weight: .medium))
-                                            .foregroundColor(.white)
-                                            .shadow(color: .black, radius: 1, x: 1, y: 1)
-                                            .lineLimit(2)
-                                    }
-                                    .padding(.leading, 20)
-                                    .padding(.bottom, 20)
-                                }
-                                .frame(width: geo.size.width,
-                                       height: geo.size.height * 0.35)
-                                .clipped()
+                                CarouselSlide(
+                                    imageName: imageName,
+                                    title: carouselTitles[index],
+                                    description: carouselDescriptions[index],
+                                    width: width,
+                                    height: carouselHeight
+                                )
                                 .tag(index)
                             }
                         }
                         .tabViewStyle(.page(indexDisplayMode: .automatic))
-                        .frame(width: geo.size.width,
-                               height: geo.size.height * 0.35)
+                        .frame(width: width, height: carouselHeight)
                         .clipped()
                         .ignoresSafeArea(.container, edges: .top)
+                        .id(currentIndex)
 
                         HStack {
-                            Text("Sua lista de viagens")
-                                .font(.system(size: min(geo.size.width * 0.08, 32), weight: .bold))
-                                .foregroundStyle(Color("FontBackground"))
-                            Spacer(minLength: 30)
+                            CompactText(text: "Sua lista de viagem ", fontSize: 32, lineHeightMultiple: 0.7, numberOfLines: 2)
+                            .fixedSize(horizontal: false, vertical: true)
+                             
+                             Spacer()
+                             
                             NavigationLink(destination: AddViagemView(hideTabBar: $hideTabBar)) {
                                 Image(systemName: "plus.circle.fill")
-                                    .font(.system(size: min(geo.size.width * 0.1, 40)))
+                                    .font(.system(size: min(width * 0.1, 40)))
                                     .foregroundColor(Color("FontBackground"))
                             }
                         }
-                        .padding(.top, -15)
-                        .padding(.horizontal, max(geo.size.width * 0.05, 20))
+                        .padding(.vertical, height * 0.01)
+                        .padding(.horizontal, max(width * 0.05, 20))
 
                         List {
                             ForEach($viagemVM.trips, id: \.id) { $trip in
                                 NavigationLink(destination: DetalheViagemView(trip: $trip, hideTabBar: $hideTabBar)) {
-                                    HStack(spacing: 12) {
-                                        ZStack {
-                                            Circle()
-                                                .fill(Color("ColorBackground").opacity(0.12))
-                                            Image(systemName: "airplane")
-                                                .foregroundStyle(Color("ColorBackground"))
-                                                .font(.system(size: 18, weight: .semibold))
-                                        }
-                                        .frame(width: 36, height: 36)
-                                        Text(trip.nome)
-                                            .font(.system(size: min(geo.size.width * 0.055, 22), weight: .semibold))
-                                            .foregroundStyle(Color("ColorBackground"))
-                                        Spacer()
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 14)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 40, style: .continuous)
-                                            .fill(Color("FontBackground"))
-                                    )
+                                    TripRow(name: trip.nome, width: width, height: height)
                                 }
                                 .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
                                 .listRowBackground(Color.clear)

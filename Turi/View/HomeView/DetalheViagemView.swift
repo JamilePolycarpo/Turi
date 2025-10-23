@@ -5,7 +5,7 @@
 //  Created by Jamile Marian Polycarpo on 07/10/25.
 //
 
-internal import SwiftUI
+import SwiftUI
 
 struct DetalheViagemView: View {
     @Binding var trip: Trip
@@ -39,7 +39,7 @@ struct DetalheViagemView: View {
                         
                          if isEditing {
                              TextField("Nome da viagem", text: $draftName)
-                                 .font(.system(size: min(geo.size.width * 0.09, 36), weight: .bold))
+                                 .font(.custom("InknutAntiqua-SemiBold",size: min(geo.size.width * 0.09, 36)))
                                  .multilineTextAlignment(.center)
                                  .foregroundColor(Color("ColorBackground"))
                                  .padding(.horizontal, max(geo.size.width * 0.08, 30))
@@ -48,7 +48,7 @@ struct DetalheViagemView: View {
                                  .cornerRadius(25)
                          } else {
                              Text(trip.nome)
-                                 .font(.system(size: min(geo.size.width * 0.105, 42), weight: .bold))
+                                 .font(.custom("InknutAntiqua-Regular",size: min(geo.size.width * 0.09, 32)))
                                  .foregroundColor(Color("ColorBackground"))
                                  .multilineTextAlignment(.center)
                                  
@@ -247,3 +247,4 @@ struct DetalheViagemView: View {
         .environmentObject(vm)
 }
  
+

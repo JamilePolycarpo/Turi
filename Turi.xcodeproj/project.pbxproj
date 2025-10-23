@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		0475B3962EA3F02600F7A205 /* Exceptions for "Turi" folder in "Turi" target */ = {
+		DF0A35EC2EA6B88800C85FD1 /* Exceptions for "Turi" folder in "Turi" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -24,7 +24,7 @@
 		DFB0EC792E845B58000BA0BD /* Turi */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				0475B3962EA3F02600F7A205 /* Exceptions for "Turi" folder in "Turi" target */,
+				DF0A35EC2EA6B88800C85FD1 /* Exceptions for "Turi" folder in "Turi" target */,
 			);
 			path = Turi;
 			sourceTree = "<group>";

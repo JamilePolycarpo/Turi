@@ -5,7 +5,7 @@
 //  Created by Leonardo Macedo on 19/10/25.
 //
 
-internal import SwiftUI
+import SwiftUI
 
 struct FlightInfoCard: View {
     let airlineLogo: String
@@ -75,7 +75,7 @@ struct FlightInfoCard: View {
             }
         }
         .padding()
-        .background(Color(.systemGray6))
+        .background(Color("FontBackground"))
         .cornerRadius(16)
         .shadow(color: Color.black.opacity(0.08), radius: 4, x: 0, y: 2)
     }
