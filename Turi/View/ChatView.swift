@@ -5,7 +5,7 @@
 //  Created by Jamile Marian Polycarpo on 03/10/25.
 //
 
-internal import SwiftUI
+import SwiftUI
 
 // MARK: - Design tokens
 private enum TuriColors {

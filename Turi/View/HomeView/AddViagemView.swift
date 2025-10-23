@@ -1,4 +1,4 @@
-internal import SwiftUI
+import SwiftUI
 
 struct AddViagemView: View {
     @State private var nome: String = ""

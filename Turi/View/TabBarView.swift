@@ -1,4 +1,4 @@
-internal import SwiftUI
+import SwiftUI
 
 enum TabItem: Int, CaseIterable {
     case home

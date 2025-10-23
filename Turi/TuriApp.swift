@@ -1,4 +1,4 @@
-internal import SwiftUI
+import SwiftUI
 
 @main
 struct TuriApp: App {

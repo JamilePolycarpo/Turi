@@ -5,7 +5,7 @@
 //  Created by Leonardo Macedo on 19/10/25.
 //
 
-internal import SwiftUI
+import SwiftUI
 
 struct DateField: View {
     var title: String
@@ -14,10 +14,12 @@ struct DateField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
-                .foregroundColor(.white)
+                .font(.custom("InknutAntiqua-Regular", size: 12))
+                .foregroundColor(Color("FontBackground"))
                 .font(.system(size: 14))
 
             DatePicker("", selection: $date, displayedComponents: .date)
+                .font(.custom("InknutAntiqua-Regular", size: 12))
                 .labelsHidden()
                 .padding(10)
                 .background(
