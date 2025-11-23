@@ -19,25 +19,10 @@ private enum TuriColors {
     static let tabIcon = Color(hex: "#0D6C58")
 }
 
-// MARK: - Models
-struct ChatMessage: Identifiable {
-    enum Sender { case user, bot, typing }
-    let id = UUID()
-    let text: String
-    let sender: Sender
-}
-
 // MARK: - Screen
 struct ChatView: View {
-    @State private var inputText: String = ""
-
-    // Conteúdo de exemplo (igual ao mock)
-    private let mockMessages: [ChatMessage] = [
-        .init(text: "Onde comer pizza em São Paulo?", sender: .user),
-        .init(text: "A melhor pizza de São Paulo é a da Leggera Pizza Napoletana, quer mais informações?", sender: .bot),
-        .init(text: "Sim, quero saber mais", sender: .user),
-        .init(text: "", sender: .typing)
-    ]
+    @StateObject private var viewModel = ChatViewModel()
+    @FocusState private var isInputFocused: Bool
 
     var body: some View {
         ZStack {
@@ -54,9 +39,8 @@ struct ChatView: View {
                 
                 ScrollViewReader { proxy in
                     ScrollView {
-                     
                         VStack(spacing: 12) {
-                            ForEach(mockMessages) { message in
+                            ForEach(viewModel.messages) { message in
                                 if message.sender == .typing {
                                     TypingIndicatorBubble()
                                         .id(message.id)
@@ -70,12 +54,32 @@ struct ChatView: View {
                         .padding(.top, 20)
                         .padding(.bottom, 8)
                     }
+                    .onChange(of: viewModel.messages.count) { _ in
+                        // Scroll para a última mensagem
+                        if let lastMessage = viewModel.messages.last {
+                            withAnimation {
+                                proxy.scrollTo(lastMessage.id, anchor: .bottom)
+                            }
+                        }
+                    }
                 }
 
-                InputBar(text: $inputText)
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 80)
-                    .background(Color.clear)
+                // Mensagem de erro
+                if viewModel.showError, let error = viewModel.errorMessage {
+                    Text(error)
+                        .foregroundColor(.red)
+                        .font(.caption)
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 8)
+                }
+
+                InputBar(text: $viewModel.inputText, onSend: {
+                    viewModel.sendMessage()
+                })
+                .focused($isInputFocused)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 80)
+                .background(Color.clear)
             }
         }
         .ignoresSafeArea()
@@ -190,7 +194,8 @@ private struct TypingIndicatorBubble: View {
 // MARK: - Input
 private struct InputBar: View {
     @Binding var text: String
-
+    let onSend: () -> Void
+    
     var body: some View {
         VStack(spacing: 10) {
             HStack {
@@ -205,6 +210,20 @@ private struct InputBar: View {
                     .padding(.horizontal, 20)
                     .opacity(text.isEmpty ? 0.001 : 1)
                     .padding()
+                    .onSubmit {
+                        if !text.isEmpty {
+                            onSend()
+                        }
+                    }
+                
+                // Botão de enviar
+                Button(action: onSend) {
+                    Image(systemName: "arrow.up.circle.fill")
+                        .font(.system(size: 28))
+                        .foregroundStyle(text.isEmpty ? Color.white.opacity(0.3) : Color.white)
+                }
+                .disabled(text.isEmpty)
+                .padding(.trailing, 8)
             }
             .frame(height: 46)
             .frame(maxWidth: .infinity)
